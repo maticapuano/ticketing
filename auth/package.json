@@ -6,7 +6,7 @@
   "author": "Matías Capuano <maticapuano97@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "ts-node-dev ./src/server.ts"
+    "start": "ts-node-dev --poll ./src/server.ts"
   },
   "dependencies": {
     "express": "^4.17.1"
