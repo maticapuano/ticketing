@@ -4,7 +4,7 @@ metadata:
   name: ingress-services
   annotations:
     kubernates.io/ingress.class: nginx
-    nginx.ingress.kubernates.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/use-regex: "true"
 spec:
   rules:
     - host: ticketing.dev
