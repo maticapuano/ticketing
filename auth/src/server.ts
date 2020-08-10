@@ -1,4 +1,4 @@
-import express from "express";
+import express, { NextFunction, Response, Request } from "express";
 import { currentUserRouter } from "./routes/currentUser";
 import { signInRouter } from "./routes/signIn";
 import { siginoutRouter } from "./routes/signOut";
@@ -16,8 +16,8 @@ app.use(signInRouter);
 app.use(siginoutRouter);
 app.use(signUpRouter);
 
-app.all("*", () => {
-  throw new NotFoundError();
+app.all("*", async (req: Request, res: Response, next: NextFunction) => {
+  return next(new NotFoundError());
 });
 
 app.use(errorHandler);
