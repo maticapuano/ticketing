@@ -1,10 +1,10 @@
 type serializeErrors = { message: string; field?: string }[];
 
 export abstract class CustomError extends Error {
-  protected abstract readonly statusCode: number;
+  public abstract readonly statusCode: number;
 
-  constructor() {
-    super();
+  constructor(message: string) {
+    super(message);
 
     Object.setPrototypeOf(this, CustomError.prototype);
   }

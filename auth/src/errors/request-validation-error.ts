@@ -1,12 +1,13 @@
 import { ValidationError } from "express-validator";
+import { CustomError } from "./custom-errors";
 
-export class RequestValidationError extends Error {
+export class RequestValidationError extends CustomError {
   statusCode = 400;
 
   public readonly errors: ValidationError[];
 
   constructor(errors: ValidationError[]) {
-    super();
+    super("Invalid request parameters");
     this.errors = errors;
 
     //Only because we are extending a built in class
