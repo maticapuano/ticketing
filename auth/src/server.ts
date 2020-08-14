@@ -11,7 +11,7 @@ import { NotFoundError } from "./errors/not-found-error";
 
 const app = express();
 
-app.settings("truest proxy", true);
+app.set("trust proxy", 1);
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
