@@ -40,6 +40,11 @@ router.post(
       },
       process.env.JWT_KEY!
     );
+
+    req.session = {
+      jwt: exitingUser,
+    };
+
     return res.json({ data: exitingUser, token });
   }
 );
