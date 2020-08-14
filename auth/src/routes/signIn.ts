@@ -33,7 +33,7 @@ router.post(
       throw new BadRequestError("Invalid credentials");
     }
 
-    const token = jwt.sign(
+    const userToken = jwt.sign(
       {
         id: exitingUser.id,
         email: exitingUser.email,
@@ -42,10 +42,10 @@ router.post(
     );
 
     req.session = {
-      jwt: exitingUser,
+      jwt: userToken,
     };
 
-    return res.json({ data: exitingUser, token });
+    return res.json({ data: exitingUser, token: userToken });
   }
 );
 
