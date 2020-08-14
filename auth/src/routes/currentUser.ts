@@ -1,5 +1,4 @@
 import { Router, Response, Request } from "express";
-import jwt from "jsonwebtoken";
 import { currentUser } from "../middlewares/current-user";
 
 const router = Router();
