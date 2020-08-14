@@ -48,7 +48,7 @@ router.post(
       jwt: userToken,
     };
 
-    return res.status(201).send({ user, token: userToken });
+    return res.status(201).send({ data: user, token: userToken });
   }
 );
 
