@@ -1,5 +1,6 @@
 import express, { NextFunction, Response, Request } from "express";
 import mongoose from "mongoose";
+import cookieSession from "cookie-session";
 import "express-async-errors";
 import { currentUserRouter } from "./routes/currentUser";
 import { signInRouter } from "./routes/signIn";
@@ -10,8 +11,11 @@ import { NotFoundError } from "./errors/not-found-error";
 
 const app = express();
 
+app.settings("truest proxy", true);
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+app.use(cookieSession({ signed: false, secure: true }));
 
 app.use(currentUserRouter);
 app.use(signInRouter);
