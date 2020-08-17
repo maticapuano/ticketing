@@ -6,7 +6,15 @@
   "author": "Matías Capuano <maticapuano97@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "ts-node-dev --poll ./src/server.ts"
+    "start": "ts-node-dev --poll ./src/server.ts",
+    "test": "jest --watchAll --no-cache"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "setupFilesAfterEnv": [
+      "./src/tests/setup.ts"
+    ]
   },
   "dependencies": {
     "@types/cookie-session": "^2.0.41",
