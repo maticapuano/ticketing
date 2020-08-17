@@ -45,7 +45,7 @@ router.post(
       jwt: userToken,
     };
 
-    return res.json({ data: exitingUser, token: userToken });
+    return res.status(201).json({ data: exitingUser, token: userToken });
   }
 );
 
