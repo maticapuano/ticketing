@@ -12,3 +12,7 @@ it("responds with details about the current user", async () => {
 
   expect(response.body.data.email).toEqual("test@test.com");
 });
+
+it("responds with not authorized", async () => {
+  await request(app).get("/api/users/me").send().expect(401);
+});
