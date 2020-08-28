@@ -14,5 +14,7 @@ it("responds with details about the current user", async () => {
 });
 
 it("responds with not authorized", async () => {
-  await request(app).get("/api/users/me").send().expect(401);
+  const response = await request(app).get("/api/users/me").send().expect(200);
+
+  expect(response.body.data).toEqual(null);
 });
