@@ -5,8 +5,8 @@ import { currentUserRouter } from "./routes/currentUser";
 import { signInRouter } from "./routes/signIn";
 import { siginoutRouter } from "./routes/signOut";
 import { signUpRouter } from "./routes/signup";
-import { errorHandler } from "./middlewares/error-handler";
-import { NotFoundError } from "./errors/not-found-error";
+
+import { errorHandler, NotFoundError } from "@mcticketing/common";
 
 const app = express();
 
