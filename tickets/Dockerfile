@@ -6,8 +6,8 @@ COPY package*.json .
 
 RUN npm install --only=prod
 
-COPY . . 
+COPY . .
 
 USER node
 
-CMD ["npm","start"]
+CMD ["npm", "start"]

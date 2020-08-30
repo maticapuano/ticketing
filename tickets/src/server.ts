@@ -1,11 +1,24 @@
-import express from "express";
+import { app } from "./app";
+import mongoose from "mongoose";
 
-const app = express();
+const start = async () => {
+  if (!process.env.JWT_KEY) {
+    throw new Error("JWT_KEY must defined");
+  }
 
-app.get("/api/tickets", (req, res) => {
-  res.json({ message: "Hi there!! service tickets" });
-});
+  try {
+    await mongoose.connect("mongodb://auth-mongo-srv:27017/auth", {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useCreateIndex: true,
+    });
+    console.log("Connected to MongoDb");
+  } catch (err) {
+    console.log(err);
+  }
+  app.listen(3000, () => {
+    console.log(`Server ready on PORT 3000`);
+  });
+};
 
-app.listen(3000, () => {
-  console.log(`Server ready on port 3000`);
-});
+start();
