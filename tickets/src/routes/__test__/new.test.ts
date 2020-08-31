@@ -40,3 +40,32 @@ it("Return an error if is invalid title provided.", async () => {
     })
     .expect(400);
 });
+
+it("Return an error if is invalid price provided", async () => {
+  await request(app)
+    .post("/api/tickets")
+    .set("Cookie", global.signin())
+    .send({
+      title: "Ticket foo",
+      price: "",
+    })
+    .expect(400);
+
+  await request(app)
+    .post("/api/tickets")
+    .set("Cookie", global.signin())
+    .send({
+      title: "Ticket foo",
+      price: 0,
+    })
+    .expect(400);
+
+  await request(app)
+    .post("/api/tickets")
+    .set("Cookie", global.signin())
+    .send({
+      title: "Ticket foo",
+      price: -25,
+    })
+    .expect(400);
+});
