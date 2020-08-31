@@ -19,3 +19,24 @@ it("Returns a status other that 401 if user is signed in", async () => {
 
   expect(response.status).not.toEqual(401);
 });
+
+it("Return an error if is invalid title provided.", async () => {
+  //Title null provided
+  await request(app)
+    .post("/api/tickets")
+    .set("Cookie", global.signin()) // set cookie signed in
+    .send({
+      title: "",
+      price: 25,
+    })
+    .expect(400);
+
+  //Title not provided
+  await request(app)
+    .post("/api/tickets")
+    .set("Cookie", global.signin()) // set cookie signed in
+    .send({
+      price: 25,
+    })
+    .expect(400);
+});
