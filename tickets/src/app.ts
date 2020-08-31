@@ -3,6 +3,7 @@ import cookieSession from "cookie-session";
 import "express-async-errors";
 
 import { errorHandler, NotFoundError } from "@mcticketing/common";
+import { newTicketRouter } from "./routes/new";
 
 const app = express();
 
@@ -13,6 +14,8 @@ app.use(express.json());
 app.use(
   cookieSession({ signed: false, secure: process.env.NODE_ENV !== "test" })
 );
+
+app.use(newTicketRouter);
 
 app.all("*", (req: Request, res: Response, next: NextFunction) => {
   return next(new NotFoundError());
