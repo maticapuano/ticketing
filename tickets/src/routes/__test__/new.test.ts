@@ -12,7 +12,10 @@ it("Can only access if the user is signed.", async () => {
 });
 
 it("Returns a status other that 401 if user is signed in", async () => {
-  const response = await request(app).post("/api/tickets").send({});
+  const response = await request(app)
+    .post("/api/tickets")
+    .set("Cookie", global.signin())
+    .send({});
 
   expect(response.status).not.toEqual(401);
 });
