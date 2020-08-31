@@ -7,12 +7,12 @@ const start = async () => {
   }
 
   try {
-    await mongoose.connect("mongodb://auth-mongo-srv:27017/auth", {
+    await mongoose.connect("mongodb://tickets-mongo-srv:27017/tickets", {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       useCreateIndex: true,
     });
-    console.log("Connected to MongoDb");
+    console.log("Mongodb connected [tickets]");
   } catch (err) {
     console.log(err);
   }
