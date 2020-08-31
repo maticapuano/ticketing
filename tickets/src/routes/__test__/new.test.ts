@@ -10,3 +10,9 @@ it("Has route handler listing to /api/tickets for post request", async () => {
 it("Can only access if the user is signed.", async () => {
   await request(app).post("/api/tickets").send({}).expect(401);
 });
+
+it("Returns a status other that 401 if user is signed in", async () => {
+  const response = await request(app).post("/api/tickets").send({});
+
+  expect(response.status).not.toEqual(401);
+});
