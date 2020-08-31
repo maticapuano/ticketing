@@ -6,3 +6,7 @@ it("Has route handler listing to /api/tickets for post request", async () => {
 
   expect(response.status).not.toEqual(404);
 });
+
+it("Can only access if the user is signed.", async () => {
+  await request(app).post("/api/tickets").send({}).expect(401);
+});

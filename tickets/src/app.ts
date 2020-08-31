@@ -2,7 +2,7 @@ import express, { NextFunction, Response, Request } from "express";
 import cookieSession from "cookie-session";
 import "express-async-errors";
 
-import { errorHandler, NotFoundError } from "@mcticketing/common";
+import { errorHandler, NotFoundError, currentUser } from "@mcticketing/common";
 import { newTicketRouter } from "./routes/new";
 
 const app = express();
@@ -14,6 +14,8 @@ app.use(express.json());
 app.use(
   cookieSession({ signed: false, secure: process.env.NODE_ENV !== "test" })
 );
+
+app.use(currentUser);
 
 app.use(newTicketRouter);
 
