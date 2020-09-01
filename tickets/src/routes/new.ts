@@ -1,6 +1,7 @@
 import { Router, Request, Response } from "express";
 import { requireAuth, validateRequest } from "@mcticketing/common";
 import { body } from "express-validator";
+import { Ticket } from "../models/Ticket";
 
 const router = Router();
 
@@ -14,8 +15,17 @@ router.post(
       .withMessage("Price must be greater than 0"),
   ],
   validateRequest,
-  (req: Request, res: Response) => {
-    return res.status(201).json({});
+  async (req: Request, res: Response) => {
+    const { title, price } = req.body;
+    const { id: userId } = req.currentUser!;
+
+    const ticket = Ticket.build({ title, price, userId });
+
+    await ticket.save();
+
+    return res.status(201).json({
+      data: ticket,
+    });
   }
 );
 
