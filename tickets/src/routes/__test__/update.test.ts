@@ -1,7 +1,7 @@
 import request from "supertest";
 import { app } from "../../app";
 
-it("Return a 401 if a user attempt update without first signed in.", async () => {
+it("Return a 401 if a user attempt update a ticket without first signed in.", async () => {
   const title = "ticket test";
   const price = 21;
 
