@@ -4,6 +4,7 @@ import "express-async-errors";
 
 import { errorHandler, NotFoundError, currentUser } from "@mcticketing/common";
 import { newTicketRouter } from "./routes/new";
+import { showTicketsRouter } from "./routes/show";
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.use(
 app.use(currentUser);
 
 app.use(newTicketRouter);
+app.use(showTicketsRouter);
 
 app.all("*", (req: Request, res: Response, next: NextFunction) => {
   return next(new NotFoundError());
