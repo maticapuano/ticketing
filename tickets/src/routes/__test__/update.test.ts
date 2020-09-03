@@ -87,3 +87,33 @@ it("return an 400 bad request if the user provider invalid title or price.", asy
     })
     .expect(400);
 });
+
+it("Update ticket if provider inputs valid", async () => {
+  const cookie = global.signin();
+
+  const response = await request(app)
+    .post("/api/tickets")
+    .set("Cookie", cookie)
+    .send({
+      title: "lalala",
+      price: 25.9,
+    })
+    .expect(201);
+
+  await request(app)
+    .put(`/api/tickets/${response.body.data.id}`)
+    .set("Cookie", cookie)
+    .send({
+      title: "title updated",
+      price: 95,
+    })
+    .expect(204);
+
+  const ticketResponse = await request(app)
+    .get(`/api/tickets/${response.body.data.id}`)
+    .send();
+
+  expect(ticketResponse.body.data.title).toEqual("title updated");
+  expect(ticketResponse.body.data.price).toEqual(95);
+  expect(ticketResponse.status).toEqual(200);
+});
