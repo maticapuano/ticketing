@@ -6,6 +6,7 @@ import { errorHandler, NotFoundError, currentUser } from "@mcticketing/common";
 import { newTicketRouter } from "./routes/new";
 import { showTicketsRouter } from "./routes/show";
 import { indexTicketRouter } from "./routes";
+import { updateTicketRouter } from "./routes/update";
 
 const app = express();
 
@@ -22,6 +23,7 @@ app.use(currentUser);
 app.use(newTicketRouter);
 app.use(showTicketsRouter);
 app.use(indexTicketRouter);
+app.use(updateTicketRouter);
 
 app.all("*", (req: Request, res: Response, next: NextFunction) => {
   return next(new NotFoundError());
