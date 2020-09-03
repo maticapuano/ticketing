@@ -14,3 +14,15 @@ it("return an 404 if the provided id does not exits", async () => {
     })
     .expect(404);
 });
+
+it("return an 401 if the user is not authenticated", async () => {
+  const id = mongoose.Types.ObjectId().toHexString();
+
+  await request(app)
+    .put(`/api/tickets/${id}`)
+    .send({
+      title: "lala",
+      price: 120,
+    })
+    .expect(401);
+});
