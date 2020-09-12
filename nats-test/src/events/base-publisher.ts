@@ -1,4 +1,3 @@
-import { rejects } from "assert";
 import { Stan } from "node-nats-streaming";
 import { Subjects } from "./subjects";
 
