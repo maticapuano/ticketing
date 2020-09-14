@@ -17,6 +17,15 @@ const start = async () => {
       "http://nats-srv:4222"
     );
 
+    //Close all connections exiting
+    natsWrapper.getClient.on("close", () => {
+      console.log("Nats connection closed.");
+      process.exit();
+    });
+
+    process.on("SIGINT", () => natsWrapper.getClient.close());
+    process.on("SIGTERM", () => natsWrapper.getClient.close());
+
     await mongoose.connect(process.env.MONGO_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
