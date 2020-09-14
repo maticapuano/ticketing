@@ -2,7 +2,8 @@ import { Router, Request, Response } from "express";
 import { requireAuth, validateRequest } from "@mcticketing/common";
 import { body } from "express-validator";
 import { Ticket } from "../models/Ticket";
-
+import { TicketCreatedPublisher } from "../events/publishers/ticket-created-publisher";
+import { natsWrapper } from "../events/nats-wrapper";
 const router = Router();
 
 router.post(
@@ -22,6 +23,13 @@ router.post(
     const ticket = Ticket.build({ title, price, userId });
 
     await ticket.save();
+
+    await new TicketCreatedPublisher(natsWrapper.getClient).publish({
+      id: ticket.id,
+      title: ticket.title,
+      price: ticket.price,
+      userId: ticket.userId,
+    });
 
     return res.status(201).json({
       data: ticket,
