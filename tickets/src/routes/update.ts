@@ -7,6 +7,8 @@ import {
   NotFoundError,
 } from "@mcticketing/common";
 import { Ticket } from "../models/Ticket";
+import { TicketUpdatedPublisher } from "../events/publishers/ticket-updated-publisher";
+import { natsWrapper } from "../events/nats-wrapper";
 
 const router = Router();
 
@@ -37,6 +39,13 @@ router.put(
     });
 
     await ticket.save();
+
+    new TicketUpdatedPublisher(natsWrapper.getClient).publish({
+      id: ticket.id,
+      title: ticket.title,
+      price: ticket.price,
+      userId: ticket.userId,
+    });
 
     return res.status(204).json({
       data: ticket,
