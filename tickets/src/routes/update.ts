@@ -8,7 +8,7 @@ import {
 } from "@mcticketing/common";
 import { Ticket } from "../models/Ticket";
 import { TicketUpdatedPublisher } from "../events/publishers/ticket-updated-publisher";
-import { natsWrapper } from "../events/nats-wrapper";
+import { natsWrapper } from "../nats-wrapper";
 
 const router = Router();
 

@@ -3,7 +3,8 @@ import { requireAuth, validateRequest } from "@mcticketing/common";
 import { body } from "express-validator";
 import { Ticket } from "../models/Ticket";
 import { TicketCreatedPublisher } from "../events/publishers/ticket-created-publisher";
-import { natsWrapper } from "../events/nats-wrapper";
+import { natsWrapper } from "../nats-wrapper";
+
 const router = Router();
 
 router.post(
