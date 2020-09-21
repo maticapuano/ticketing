@@ -3,7 +3,10 @@ import cookieSession from "cookie-session";
 import "express-async-errors";
 
 import { errorHandler, NotFoundError, currentUser } from "@mcticketing/common";
-import { indexTestRouter } from "./routes";
+import { indexOrderRouter } from "./routes";
+import { showOrderRouter } from "./routes/show";
+import { newOrderRouter } from "./routes/new";
+import { deleteOrderRouter } from "./routes/delete";
 
 const app = express();
 
@@ -17,7 +20,10 @@ app.use(
 
 app.use(currentUser);
 
-app.use(indexTestRouter);
+app.use(indexOrderRouter);
+app.use(showOrderRouter);
+app.use(newOrderRouter);
+app.use(deleteOrderRouter);
 
 app.all("*", (req: Request, res: Response, next: NextFunction) => {
   return next(new NotFoundError());
