@@ -2,12 +2,14 @@ import { Request, Response, Router } from "express";
 import {
   BadRequestError,
   NotFoundError,
+  OrderStatus,
   requireAuth,
   validateRequest,
 } from "@mcticketing/common";
 import { body } from "express-validator";
 import mongoose from "mongoose";
 import { Ticket } from "../models/ticket";
+import { Order } from "../models/order";
 
 const router = Router();
 
@@ -39,8 +41,24 @@ router.post(
       throw new BadRequestError("Ticket is already reserved");
     }
 
-    res.status(200).json({
-      message: "The service the orders Working method post 😁😁😜😍",
+    //Calculate an expiration date for the order
+    const expiration = new Date();
+    expiration.setSeconds(expiration.getSeconds() + 15 * 60);
+
+    //Build the order and save it to the database.
+    const order = Order.build({
+      userId: req.currentUser!.id,
+      ticket: ticketId,
+      expiresAt: expiration,
+      status: OrderStatus.Created,
+    });
+
+    await order.save();
+
+    //Publish an event saying that an order was created
+
+    res.status(201).json({
+      order,
     });
   }
 );
