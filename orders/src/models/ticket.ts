@@ -44,6 +44,20 @@ ticketSchema.statics.build = (attrs: TicketAttrs) => {
   return new Ticket(attrs);
 };
 
+ticketSchema.methods.isReserved = async function () {
+  const existingOrder = await Order.findOne({
+    ticket: this,
+    status: {
+      $in: [
+        OrderStatus.Created,
+        OrderStatus.AwingPayment,
+        OrderStatus.Complete,
+      ],
+    },
+  });
+  return !!existingOrder;
+};
+
 const Ticket = mongoose.model<TicketDoc, TicketModel>("Ticket", ticketSchema);
 
 export { Ticket };
