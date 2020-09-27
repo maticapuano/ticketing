@@ -13,3 +13,9 @@ it("Return an error if the ticket does not exits", async () => {
     })
     .expect(404);
 });
+
+it("Return an 401 unauthorized if not provided cookie at token", async () => {
+  const response = await request(app).post("/api/orders").send();
+
+  expect(response.status).toEqual(401);
+});
