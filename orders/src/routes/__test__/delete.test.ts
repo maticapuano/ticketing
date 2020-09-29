@@ -40,3 +40,33 @@ it("Mark a order as Canceled", async () => {
 
   expect(updatedOrder?.status).toEqual(OrderStatus.Canceled);
 });
+
+it("Return an error if other user tries to delete order other user.", async () => {
+  const ticket = Ticket.build({
+    title: "Concert cool!!",
+    price: 290.99,
+  });
+
+  await ticket.save();
+
+  //Create a user
+  const user = global.signin();
+  const userBad = global.signin();
+
+  //Create a order for current user
+  const order = await request(app)
+    .post("/api/orders/")
+    .set("Cookie", user)
+    .send({ ticketId: ticket.id })
+    .expect(201);
+
+  //Tries cancel a order other user
+  const id = order.body.order.id;
+
+  const cancelOrderOtherUser = await request(app)
+    .delete(`/api/orders/${id}`)
+    .set("Cookie", userBad)
+    .send();
+
+  expect(cancelOrderOtherUser.status).toEqual(401);
+});
