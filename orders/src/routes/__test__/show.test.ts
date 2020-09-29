@@ -36,3 +36,40 @@ it("Return a order by id current user", async () => {
   expect(order.status).toEqual(200);
   expect(order.body.data.ticket.id).toEqual(ticket.id);
 });
+
+it("Return an error if one user tries to fetch another user order.", async () => {
+  const ticket = Ticket.build({
+    title: "Concer rock!!",
+    price: 963.99,
+  });
+  await ticket.save();
+
+  //Create two user real and fake user fetch
+  const userReal = global.signin();
+  const userBad = global.signin();
+
+  //Create Order for user Real
+  const orderReal = await request(app)
+    .post("/api/orders")
+    .set("Cookie", userReal)
+    .send({ ticketId: ticket.id })
+    .expect(201);
+
+  //Fetch order for user real
+  const idOrderReal = orderReal.body.order.id;
+  const getOrderReal = await request(app)
+    .get(`/api/orders/${idOrderReal}`)
+    .set("Cookie", userReal)
+    .expect(200);
+
+  expect(getOrderReal.status).toEqual(200);
+  expect(getOrderReal.body.data.ticket.id).toEqual(ticket.id);
+
+  //Fetch order other user not is real.
+  const orderBadUser = await request(app)
+    .get(`/api/orders/${idOrderReal}`)
+    .set("Cookie", userBad)
+    .send();
+
+  expect(orderBadUser.status).toEqual(401);
+});
