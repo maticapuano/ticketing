@@ -70,3 +70,5 @@ it("Return an error if other user tries to delete order other user.", async () =
 
   expect(cancelOrderOtherUser.status).toEqual(401);
 });
+
+it.todo("Emits a event order canceled event.");
