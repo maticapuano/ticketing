@@ -5,7 +5,9 @@ import {
   requireAuth,
 } from "@mcticketing/common";
 import { Request, Response, Router } from "express";
+import { OrderCancelledPublisher } from "../events/publishers/order-cancelled-publisher";
 import { Order } from "../models/order";
+import { natsWrapper } from "../nats-wrapper";
 
 const router = Router();
 
@@ -14,7 +16,7 @@ router.delete(
   requireAuth,
   async (req: Request, res: Response) => {
     const { id } = req.params;
-    const order = await Order.findById(id);
+    const order = await Order.findById(id).populate("ticket");
 
     if (!order) {
       throw new NotFoundError();
@@ -29,6 +31,15 @@ router.delete(
     order.status = OrderStatus.Canceled;
 
     await order.save();
+
+    //Emit a event after mark as Canceled a Order.
+
+    new OrderCancelledPublisher(natsWrapper.getClient).publish({
+      id: order.id,
+      ticket: {
+        id: order.ticket.id,
+      },
+    });
 
     return res.status(202).json({
       data: order,
