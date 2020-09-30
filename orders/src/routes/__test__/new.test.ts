@@ -88,5 +88,5 @@ it("Emit a order created event", async () => {
   expect(response.status).toEqual(201);
 
   //Expected called method publish.
-  expect(natsWrapper.getClient.publish).not.toHaveBeenCalled();
+  expect(natsWrapper.getClient.publish).toHaveBeenCalled();
 });
