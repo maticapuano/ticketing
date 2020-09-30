@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import { Ticket } from "../../models/ticket";
 import { Order } from "../../models/order";
 import { OrderStatus } from "@mcticketing/common";
+import { natsWrapper } from "../../nats-wrapper";
 
 it("Return an error if the ticket does not exits", async () => {
   const ticketId = mongoose.Types.ObjectId();
@@ -69,4 +70,23 @@ it("Reserved a ticket", async () => {
   expect(response.status).toEqual(201);
 });
 
-it.todo("Emit a order created event");
+it("Emit a order created event", async () => {
+  const ticket = Ticket.build({
+    title: "Concert cool 👌",
+    price: 991,
+  });
+  await ticket.save();
+
+  //Reserve order
+  const response = await request(app)
+    .post("/api/orders")
+    .set("Cookie", global.signin())
+    .send({
+      ticketId: ticket.id,
+    });
+
+  expect(response.status).toEqual(201);
+
+  //Expected called method publish.
+  expect(natsWrapper.getClient.publish).not.toHaveBeenCalled();
+});
