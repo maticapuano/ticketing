@@ -17,7 +17,6 @@ export class TicketUpdatedListener extends Listener<TicketUpdatedEvent> {
     if (!ticket) {
       throw new Error("Ticket not found");
     }
-    console.log(ticket);
 
     ticket.set({ title, price });
 
