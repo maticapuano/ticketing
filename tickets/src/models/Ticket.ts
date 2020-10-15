@@ -11,7 +11,7 @@ interface TicketDoc extends mongoose.Document {
   title: string;
   price: number;
   userId: string;
-  version:number
+  version: number;
 }
 
 interface TicketModel extends mongoose.Model<TicketDoc> {
@@ -45,9 +45,9 @@ const ticketSchema = new Schema(
   }
 );
 
-ticketSchema.set('versionKey','version')
+ticketSchema.set("versionKey", "version");
 
-ticketSchema.plugin(updateIfCurrentPlugin)
+ticketSchema.plugin(updateIfCurrentPlugin);
 
 ticketSchema.statics.build = (attrs: TicketAttrs) => {
   return new Ticket(attrs);
