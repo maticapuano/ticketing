@@ -1,6 +1,5 @@
 import { OrderStatus } from "@mcticketing/common";
 import mongoose, { Schema } from "mongoose";
-import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 import { Order } from "./order";
 
 interface TicketAttrs {
@@ -48,7 +47,15 @@ const ticketSchema = new Schema(
 );
 
 ticketSchema.set("versionKey", "version");
-ticketSchema.plugin(updateIfCurrentPlugin);
+
+ticketSchema.pre("save", function (done) {
+  // @ts-ignore
+  this.$where = {
+    version: this.get("version") - 1,
+  };
+
+  done();
+});
 
 ticketSchema.statics.build = (attrs: TicketAttrs) => {
   return new Ticket({
