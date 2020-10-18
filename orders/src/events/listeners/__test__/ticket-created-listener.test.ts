@@ -39,3 +39,13 @@ it("Creates and save a ticket", async () => {
   expect(ticket).toBeDefined();
   expect(ticket?.title).toEqual(data.title);
 });
+
+it("Acks the message", async () => {
+  const { data, listener, msg } = await setup();
+
+  //cal the onMessage function with the object data
+  await listener.onMessage(data, msg);
+
+  //Write assertions to make sure ack function
+  expect(msg.ack).toHaveBeenCalled();
+});
