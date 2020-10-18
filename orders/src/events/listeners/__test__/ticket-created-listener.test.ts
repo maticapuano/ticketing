@@ -3,6 +3,7 @@ import { natsWrapper } from "../../../nats-wrapper";
 import { TicketCreatedListener } from "../ticket-created-listener";
 import mongoose from "mongoose";
 import { Message } from "node-nats-streaming";
+import { Ticket } from "../../../models/ticket";
 
 const setup = async () => {
   //Create a instance of the listener
@@ -25,3 +26,16 @@ const setup = async () => {
 
   return { listener, data, msg };
 };
+
+it("Creates and save a ticket", async () => {
+  const { listener, data, msg } = await setup();
+
+  //call the onMessage function with the data object
+  await listener.onMessage(data, msg);
+
+  //write assertions to make sure a ticket was created
+  const ticket = await Ticket.findById(data.id);
+
+  expect(ticket).toBeDefined();
+  expect(ticket?.title).toEqual(data.title);
+});
