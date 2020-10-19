@@ -14,7 +14,11 @@ it("Return a 401 unauthorized if not at signin", async () => {
 });
 
 it("Mark a order as Canceled", async () => {
-  const ticket = Ticket.build({ title: "Concert pop!!", price: 256.32 });
+  const ticket = Ticket.build({
+    id: mongoose.Types.ObjectId().toHexString(),
+    title: "Concert pop!!",
+    price: 256.32,
+  });
   await ticket.save();
 
   //Create User
@@ -44,6 +48,7 @@ it("Mark a order as Canceled", async () => {
 
 it("Return an error if other user tries to delete order other user.", async () => {
   const ticket = Ticket.build({
+    id: mongoose.Types.ObjectId().toHexString(),
     title: "Concert cool!!",
     price: 290.99,
   });
@@ -73,7 +78,11 @@ it("Return an error if other user tries to delete order other user.", async () =
 });
 
 it("Emits a event order canceled event.", async () => {
-  const ticket = Ticket.build({ title: "Concert pop!!", price: 256.32 });
+  const ticket = Ticket.build({
+    id: mongoose.Types.ObjectId().toHexString(),
+    title: "Concert pop!!",
+    price: 256.32,
+  });
   await ticket.save();
 
   //Create User

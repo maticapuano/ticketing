@@ -26,6 +26,7 @@ it("Return an 401 unauthorized if not provided cookie at token", async () => {
 
 it("Returns an error if the ticket is already reserved.", async () => {
   const ticket = Ticket.build({
+    id: mongoose.Types.ObjectId().toHexString(),
     title: "Foo ticket concert",
     price: 250,
   });
@@ -54,6 +55,7 @@ it("Returns an error if the ticket is already reserved.", async () => {
 
 it("Reserved a ticket", async () => {
   const ticket = Ticket.build({
+    id: mongoose.Types.ObjectId().toHexString(),
     title: "Concert cool 👌",
     price: 991,
   });
@@ -72,6 +74,7 @@ it("Reserved a ticket", async () => {
 
 it("Emit a order created event", async () => {
   const ticket = Ticket.build({
+    id: mongoose.Types.ObjectId().toHexString(),
     title: "Concert cool 👌",
     price: 991,
   });

@@ -12,6 +12,7 @@ it("Return a 401 unauthorized if not authenticated.", async () => {
 
 it("Return a order by id current user", async () => {
   const ticket = Ticket.build({
+    id: mongoose.Types.ObjectId().toHexString(),
     title: "Concert pop",
     price: 256.99,
   });
@@ -39,6 +40,7 @@ it("Return a order by id current user", async () => {
 
 it("Return an error if one user tries to fetch another user order.", async () => {
   const ticket = Ticket.build({
+    id: mongoose.Types.ObjectId().toHexString(),
     title: "Concer rock!!",
     price: 963.99,
   });
