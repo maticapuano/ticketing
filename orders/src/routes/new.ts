@@ -58,15 +58,15 @@ router.post(
     await order.save();
 
     //Publish an event saying that an order was created
-    new OrderCreatedPublisher(natsWrapper.getClient).publish({
+    await new OrderCreatedPublisher(natsWrapper.getClient).publish({
       id: order.id,
       status: order.status,
+      userId: order.userId,
       ticket: {
-        id: order.ticket.id,
-        price: order.ticket.price,
+        id: ticket.id,
+        price: ticket.price,
       },
       expiresAt: order.expiresAt.toISOString(),
-      userId: order.userId,
       version: order.version,
     });
 
