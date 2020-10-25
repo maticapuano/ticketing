@@ -2,6 +2,7 @@ import request from "supertest";
 import { app } from "../../app";
 import mongoose from "mongoose";
 import { natsWrapper } from "../../nats-wrapper";
+import { Ticket } from "../../models/Ticket";
 
 it("return an 404 if the provided id does not exits", async () => {
   const id = mongoose.Types.ObjectId().toHexString();
@@ -138,4 +139,30 @@ it("Publishes an event", async () => {
     .expect(401);
 
   expect(natsWrapper.getClient.publish).toHaveBeenCalled();
+});
+
+it("Reject updates if the ticket is reserved", async () => {
+  const response = await request(app)
+    .post("/api/tickets")
+    .set("Cookie", global.signin())
+    .send({
+      title: "foo",
+      price: 120,
+    });
+
+  //Reserve a ticket
+  const ticket = await Ticket.findById(response.body.data.id);
+  const orderId = mongoose.Types.ObjectId().toHexString();
+
+  ticket?.set({ orderId });
+  await ticket?.save();
+
+  await request(app)
+    .put(`/api/tickets/${response.body.data.id}`)
+    .set("Cookie", global.signin())
+    .send({
+      title: "the update should responds bad request ",
+      price: 190,
+    })
+    .expect(400);
 });
