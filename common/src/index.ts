@@ -23,3 +23,6 @@ export * from "./events/types/interfaces/orders/order-canceled-event";
 
 //Order status enums
 export * from "./events/types/enums/order-status";
+
+//Expiration enum
+export * from "./events/types/interfaces/expiration/expiration-complete-event";
