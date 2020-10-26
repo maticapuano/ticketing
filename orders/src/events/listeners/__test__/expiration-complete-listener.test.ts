@@ -37,3 +37,13 @@ const setup = async () => {
 
   return { listener, order, ticket, data, msg };
 };
+
+it("Updates the order to cancelled", async () => {
+  const { data, listener, msg } = await setup();
+
+  await listener.onMessage(data, msg);
+
+  const updatedOrder = await Order.findById(data.orderId);
+
+  expect(updatedOrder?.status).toEqual(OrderStatus.Canceled);
+});
