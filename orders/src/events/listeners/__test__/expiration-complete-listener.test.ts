@@ -58,6 +58,7 @@ it("Emit an Order cancelled event", async () => {
   );
 
   expect(eventData.id).toEqual(data.orderId);
+  expect(natsWrapper.getClient.publish).toHaveBeenCalled();
 });
 
 it("Ack the message.", async () => {
