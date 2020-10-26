@@ -47,3 +47,15 @@ it("Updates the order to cancelled", async () => {
 
   expect(updatedOrder?.status).toEqual(OrderStatus.Canceled);
 });
+
+it("Emit an Order cancelled event", async () => {
+  const { data, listener, msg } = await setup();
+
+  await listener.onMessage(data, msg);
+
+  const eventData = JSON.parse(
+    (natsWrapper.getClient.publish as jest.Mock).mock.calls[0][1]
+  );
+
+  expect(eventData.id).toEqual(data.orderId);
+});
