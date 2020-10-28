@@ -1,18 +1,29 @@
-import { OrderCancelledEvent } from "@mcticketing/common";
+import { OrderCancelledEvent, OrderStatus } from "@mcticketing/common";
 import { natsWrapper } from "../../../nats-wrapper";
 import { OrderCancelledListener } from "../order-cancelled-listener";
 import mongoose from "mongoose";
 import { Message } from "node-nats-streaming";
+import { Order } from "../../../models/order";
 
 const setup = async () => {
   const listener = new OrderCancelledListener(natsWrapper.getClient);
 
-  const data: OrderCancelledEvent["data"] = {
+  const order = Order.build({
     id: mongoose.Types.ObjectId().toHexString(),
+    price: 99.3,
+    status: OrderStatus.Created,
+    userId: mongoose.Types.ObjectId().toHexString(),
+    version: 0,
+  });
+
+  await order.save();
+
+  const data: OrderCancelledEvent["data"] = {
+    id: order.id,
     ticket: {
       id: mongoose.Types.ObjectId().toHexString(),
     },
-    version: 0,
+    version: 1,
   };
 
   //@ts-ignore
