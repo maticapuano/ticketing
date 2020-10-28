@@ -3,6 +3,7 @@ import { natsWrapper } from "../../../nats-wrapper";
 import { OrderCreatedListener } from "../order-created-listener";
 import mongoose from "mongoose";
 import { Message } from "node-nats-streaming";
+import { Order } from "../../../models/order";
 
 const setup = async () => {
   const listener = new OrderCreatedListener(natsWrapper.getClient);
@@ -26,3 +27,14 @@ const setup = async () => {
 
   return { msg, listener, data };
 };
+
+it("Recibe order event", async () => {
+  const { listener, msg, data } = await setup();
+
+  await listener.onMessage(data, msg);
+
+  const order = await Order.findById(data.id);
+
+  expect(order?.price).toEqual(data.ticket.price);
+  expect(order?.version).toEqual(0);
+});
