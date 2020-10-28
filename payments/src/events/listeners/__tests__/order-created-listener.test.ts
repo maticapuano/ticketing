@@ -38,3 +38,11 @@ it("Recibe order event", async () => {
   expect(order?.price).toEqual(data.ticket.price);
   expect(order?.version).toEqual(0);
 });
+
+it("Ack message", async () => {
+  const { listener, msg, data } = await setup();
+
+  await listener.onMessage(data, msg);
+
+  expect(msg.ack).toHaveBeenCalled();
+});
