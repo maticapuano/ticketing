@@ -31,5 +31,15 @@ const setup = async () => {
     ack: jest.fn(),
   };
 
-  return { msg, listener, data };
+  return { msg, listener, data, order };
 };
+
+it("Update order status to order cancelled", async () => {
+  const { listener, data, msg, order } = await setup();
+
+  await listener.onMessage(data, msg);
+
+  const updatedOrder = await Order.findById(order.id);
+
+  expect(updatedOrder!.status).toEqual(OrderStatus.Canceled);
+});
