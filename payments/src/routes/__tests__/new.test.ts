@@ -36,3 +36,26 @@ it("Return a 401 when pushing an order that doesn't belong the user", async () =
 
   expect(response.status).toEqual(401);
 });
+
+it("Return a 400 when punching a order cancelled", async () => {
+  const userId = mongoose.Types.ObjectId().toHexString();
+
+  const order = Order.build({
+    id: mongoose.Types.ObjectId().toHexString(),
+    price: 25.99,
+    status: OrderStatus.Canceled,
+    userId,
+    version: 0,
+  });
+
+  await order.save();
+
+  await request(app)
+    .post("/api/payments")
+    .set("Cookie", global.signin(userId))
+    .send({
+      token: "foo",
+      orderId: order.id,
+    })
+    .expect(400);
+});
