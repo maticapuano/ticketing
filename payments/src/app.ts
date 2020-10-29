@@ -3,7 +3,7 @@ import cookieSession from "cookie-session";
 import "express-async-errors";
 
 import { errorHandler, NotFoundError, currentUser } from "@mcticketing/common";
-import { indexPaymentRouter } from "./routes/index";
+import { indexPaymentRouter } from "./routes/new";
 
 const app = express();
 
