@@ -14,13 +14,14 @@
     ]
   },
   "dependencies": {
-    "@mcticketing/common": "^1.0.9",
+    "@mcticketing/common": "^1.0.10",
     "@types/cookie-session": "^2.0.41",
     "@types/express": "^4.17.7",
     "@types/express-validator": "^3.0.0",
     "@types/jsonwebtoken": "^8.5.0",
     "@types/mongoose": "^5.7.36",
     "@types/node": "^14.0.27",
+    "@types/stripe": "^7.13.25",
     "cookie-session": "^1.4.0",
     "express": "^4.17.1",
     "express-async-errors": "^3.1.1",
