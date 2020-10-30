@@ -14,7 +14,7 @@
     ]
   },
   "dependencies": {
-    "@mcticketing/common": "^1.0.10",
+    "@mcticketing/common": "^1.0.12",
     "@types/cookie-session": "^2.0.41",
     "@types/express": "^4.17.7",
     "@types/express-validator": "^3.0.0",
