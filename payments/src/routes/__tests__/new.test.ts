@@ -63,9 +63,10 @@ it("Return a 400 when punching a order cancelled", async () => {
 
 it("Return a 204 with valid inputs", async () => {
   const userId = mongoose.Types.ObjectId().toHexString();
+  const price = Math.floor(Math.random() * 100000);
   const order = Order.build({
     id: mongoose.Types.ObjectId().toHexString(),
-    price: 99.99,
+    price,
     status: OrderStatus.Created,
     userId,
     version: 0,
