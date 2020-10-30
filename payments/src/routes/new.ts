@@ -13,13 +13,21 @@ import { Order } from "../models/order";
 import { Payment } from "../models/payment";
 import { natsWrapper } from "../nats-wrapper";
 import { stripe } from "../stripe";
+import mongoose from "mongoose";
 
 const router = Router();
 
 router.post(
   "/api/payments",
   requireAuth,
-  [body("token").not().isEmpty(), body("orderId").not().isEmpty()],
+  [
+    body("token").not().isEmpty(),
+    body("orderId")
+      .not()
+      .isEmpty()
+      .custom((input: string) => mongoose.Types.ObjectId.isValid(input))
+      .withMessage("orderId must be provider."),
+  ],
   validateRequest,
   async (req: Request, res: Response) => {
     const { token, orderId } = req.body;
