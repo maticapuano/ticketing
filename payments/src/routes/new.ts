@@ -41,7 +41,7 @@ router.post(
       source: token,
     });
 
-    res.status(201).json({
+    res.status(204).json({
       success: true,
     });
   }
