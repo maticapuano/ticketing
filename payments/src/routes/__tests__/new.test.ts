@@ -3,6 +3,7 @@ import { app } from "../../app";
 import mongoose from "mongoose";
 import { Order } from "../../models/order";
 import { OrderStatus } from "@mcticketing/common";
+import { stripe } from "../../stripe";
 
 it("Returns a 404 when punching an order that does not exits", async () => {
   await request(app)
@@ -79,4 +80,9 @@ it("Return a 204 with valid inputs", async () => {
       token: "tok_visa",
     })
     .expect(204);
+
+  const chargeOptions = (stripe.charges.create as jest.Mock).mock.calls[0][0];
+
+  expect(chargeOptions.source).toEqual("tok_visa");
+  expect(chargeOptions.amount).toEqual(order.price * 100);
 });
