@@ -38,6 +38,14 @@ router.post(
       throw new BadRequestError("Cannot pay for an cancelled order");
     }
 
+    const findPayment = await Payment.findOne({
+      orderId: order.id,
+    });
+
+    if (findPayment) {
+      throw new BadRequestError("Cannot pay for an payed order.");
+    }
+
     const charge = await stripe.charges.create({
       amount: order.price * 100,
       currency: "USD",
