@@ -20,6 +20,7 @@ export * from "./events/types/interfaces/tickets/ticket-created-event";
 export * from "./events/types/interfaces/tickets/ticket-updated-event";
 export * from "./events/types/interfaces/orders/order-created-event";
 export * from "./events/types/interfaces/orders/order-canceled-event";
+export * from "./events/types/interfaces/payments/payment-created-event";
 
 //Order status enums
 export * from "./events/types/enums/order-status";
