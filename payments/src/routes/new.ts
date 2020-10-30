@@ -9,6 +9,7 @@ import {
 import { Request, Response, Router } from "express";
 import { body } from "express-validator";
 import { Order } from "../models/order";
+import { stripe } from "../stripe";
 
 const router = Router();
 
@@ -33,6 +34,12 @@ router.post(
     if (order.status === OrderStatus.Canceled) {
       throw new BadRequestError("Cannot pay for an cancelled order");
     }
+
+    await stripe.charges.create({
+      amount: order.price * 100,
+      currency: "USD",
+      source: token,
+    });
 
     res.status(201).json({
       success: true,
