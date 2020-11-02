@@ -1,6 +1,6 @@
 import "bootstrap/dist/css/bootstrap.css";
 import buildClient from "../api/build-client";
-import Header from "../components/header";
+import Header from "../components/Header";
 
 const AppComponent = ({ Component, pageProps, currentUser }) => {
   return (
@@ -15,14 +15,18 @@ const AppComponent = ({ Component, pageProps, currentUser }) => {
 
 AppComponent.getInitialProps = async (appContext) => {
   const client = buildClient(appContext.ctx);
-  const { data } = await client.get("/api/users/me");
+  const request = await client.get("/api/users/me");
+
+  const data = {
+    currentUser: request.data.data,
+  };
 
   let pageProps = {};
   if (appContext.Component.getInitialProps) {
     pageProps = await appContext.Component.getInitialProps(
       appContext.ctx,
       client,
-      data.data
+      data
     );
   }
 
